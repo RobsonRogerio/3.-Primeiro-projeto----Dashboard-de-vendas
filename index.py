@@ -9,6 +9,10 @@ import plotly.express as px
 import plotly.graph_objects as go
 import dash_bootstrap_components as dbc
 
+from dash_bootstrap_templates import load_figure_template
+
+load_figure_template('minty')
+
 app = dash.Dash(external_stylesheets=[dbc.themes.MINTY])
 server = app.server
 
@@ -20,7 +24,8 @@ app.layout = html.Div(children=[
                 dbc.Row([
                     dbc.Col([
                         dbc.Card([
-                            html.H3('ASIMOV', style={'font-family': 'Voltaire', 'font-size': '50px'}),
+                            html.H3('RSL', style={'font-family': 'Tahoma', 'font-size': '50px', 'text-align': 'center'}),
+                            html.H4('BI & Análise de Dados', style={'font-family': 'Tahoma', 'font-size': '15px', 'text-align': 'center'}),
                             html.Hr(),
                             html.H5("Cidades:"),
                                 dcc.Checklist(df_data["City"].value_counts().index,
@@ -77,9 +82,10 @@ def render_graphs(cities, main_variable):
     fig_product_income = px.bar(df_product_income, x=main_variable, y='Product line', color='City', orientation='h', barmode='group')
     fig_income_date = px.bar(df_income_time, y=main_variable, x='Date')
     
-    fig_city.update_layout(margin=dict(l=0, r=0, t=20, b=20), height=200)
-    fig_payment.update_layout(margin=dict(l=0, r=0, t=20, b=20), height=200)
-    fig_product_income.update_layout(margin=dict(l=0, r=0, t=20, b=20), height=500)
+    for fig in [fig_city, fig_payment, fig_gender, fig_income_date]:
+        fig.update_layout(margin=dict(l=0, r=10, t=20, b=20), height=200)
+        
+    fig_product_income.update_layout(margin=dict(l=0, r=10, t=20, b=20), height=500)
 
     return fig_city, fig_payment, fig_gender, fig_income_date, fig_product_income
 
